@@ -1,0 +1,83 @@
+#include <Servo.h>
+
+// Defines the servo objects for each motor
+Servo servo1;
+Servo servo2;
+Servo servo3;
+Servo servo4;
+Servo servo5;
+
+// Defines the pins for each servo motor
+int servoPin1 = 3;
+int servoPin2 = 5;
+int servoPin3 = 6;
+int servoPin4 = 9;
+int servoPin5 = 10;
+
+// Defines variables for EMG sensor readings
+int emg1;
+int emg2;
+int emg3;
+int emg4;
+int emg5;
+
+// Caliberates values for each servo motor
+int calibrate1 = 90;  // Adjust these values based on calibration
+int calibrate2 = 90;
+int calibrate3 = 90;
+int calibrate4 = 90;
+int calibrate5 = 90;
+
+void setup() {
+  // Attaches each servo to its respective pin
+  servo1.attach(servoPin1);
+  servo2.attach(servoPin2);
+  servo3.attach(servoPin3);
+  servo4.attach(servoPin4);
+  servo5.attach(servoPin5);
+
+  // Performs calibration
+  calibrateServos();
+}
+
+void loop() {
+  // Read EMG sensor values
+  emg1 = analogRead(A0);
+  emg2 = analogRead(A1);
+  emg3 = analogRead(A2);
+  emg4 = analogRead(A3);
+  emg5 = analogRead(A4);
+
+  // Map EMG sensor readings to servo angles
+  int angle1 = map(emg1, 0, 1023, 0, 180);
+  int angle2 = map(emg2, 0, 1023, 0, 180);
+  int angle3 = map(emg3, 0, 1023, 0, 180);
+  int angle4 = map(emg4, 0, 1023, 0, 180);
+  int angle5 = map(emg5, 0, 1023, 0, 180);
+
+  // Move servo motors based on EMG sensor readings
+  servo1.write(angle1);
+  servo2.write(angle2);
+  servo3.write(angle3);
+  servo4.write(angle4);
+  servo5.write(angle5);
+}
+
+void calibrateServos() {
+  // Moves each servo to its calibration position
+  servo1.write(calibrate1);
+  servo2.write(calibrate2);
+  servo3.write(calibrate3);
+  servo4.write(calibrate4);
+  servo5.write(calibrate5);
+
+  delay(5000); // Allow time for manual adjustment if needed
+
+  // Saves calibrated positions
+  calibrate1 = servo1.read();
+  calibrate2 = servo2.read();
+  calibrate3 = servo3.read();
+  calibrate4 = servo4.read();
+  calibrate5 = servo5.read();
+}
+
